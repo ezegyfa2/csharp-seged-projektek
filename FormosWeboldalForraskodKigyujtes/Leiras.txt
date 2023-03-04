@@ -1,0 +1,1 @@
+﻿Egy formon tolti be a weboldalt majd visszaadja a htmlt CefSharp(chrome) packaget hasznalva.

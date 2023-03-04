@@ -1,0 +1,1 @@
+﻿Html-bol valo adatkinyeres/html feldolgozas. Fokent html kigyujtovel erdemes hasznalni mint a FormosWeboldalForrasKodKigyujtes. A kigyujto leszedi a weboldal htmljet a HtmlNodeAdatKigyujtovel pedig fel lehet dolgozni.
