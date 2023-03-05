@@ -12,6 +12,7 @@ namespace AdatbazisFunkciok
             MySqlDataReader beolvaso = LekeresIdAlapjan(id);
             AdatokBeallitasaReaderbol(beolvaso);
             beolvaso.Close();
+            Adatbazis.KapcsolatBezaras(beolvaso);
         }
 
         public TarolhatoAdat(MySqlDataReader reader)

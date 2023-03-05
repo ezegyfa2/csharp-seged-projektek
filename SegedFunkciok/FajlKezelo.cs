@@ -9,7 +9,7 @@ namespace SegedFunkciok
 {
     public class FajlKezelo
     {
-        public static string MAPPA_ELERESI_UTVONAL = "D:\\Projektek\\Ceg\\Erno\\Projekt filok\\";
+        public static string MAPPA_ELERESI_UTVONAL = "D:\\Projektek\\Catalyst\\";
 
         public static string FileNevValtoztatas(string fileUrl, string elotag)
         {

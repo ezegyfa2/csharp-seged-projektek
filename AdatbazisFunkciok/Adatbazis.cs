@@ -12,12 +12,14 @@ namespace AdatbazisFunkciok
     public class Adatbazis
     {
         public static AdatbazisBeallitas beallitas;
+        public static Dictionary<object, MySqlConnection> Kapcsolatok = new Dictionary<object, MySqlConnection>();
+        public static List<MySqlConnection> connections = new List<MySqlConnection>();
 
         public static void Beallitas(string configFileEleresiUtvonal = null)
         {
             if (configFileEleresiUtvonal == null)
             {
-                configFileEleresiUtvonal = "D:\\Projektek\\SegedProjektek\\AdatbazisFunkciok\\config.txt";
+                configFileEleresiUtvonal = "config.txt";
             }
             beallitas = new AdatbazisBeallitas(configFileEleresiUtvonal);
         }
@@ -66,6 +68,7 @@ namespace AdatbazisFunkciok
             MySqlDataReader beolvaso = Lekeres(tablaNev, lekerendoOszlopNevek, oszlopNevek, oszlopErtekek);
             bool letezoEleme = beolvaso.HasRows;
             beolvaso.Close();
+            KapcsolatBezaras(beolvaso);
             return letezoEleme;
         }
 
@@ -83,6 +86,7 @@ namespace AdatbazisFunkciok
                     throw new Exception("Tul sok talalat");
             }
             lekeres.Close();
+            KapcsolatBezaras(lekeres);
             return lekertId;
         }
 
@@ -95,6 +99,7 @@ namespace AdatbazisFunkciok
                 lekertAdatok.Add((LekertAdatTipus)Activator.CreateInstance(typeof(LekertAdatTipus), beolvaso));
             }
             beolvaso.Close();
+            KapcsolatBezaras(beolvaso);
             return lekertAdatok;
         }
 
@@ -105,8 +110,11 @@ namespace AdatbazisFunkciok
 
         public static MySqlDataReader Lekeres(string query)
         {
-            MySqlCommand select = new MySqlCommand(query, KapcsolatKeszites());
-            return select.ExecuteReader();
+            MySqlConnection kapcsolat = KapcsolatKeszites();
+            MySqlCommand select = new MySqlCommand(query, kapcsolat);
+            MySqlDataReader beolvaso = select.ExecuteReader();
+            Kapcsolatok[beolvaso] = kapcsolat;
+            return beolvaso;
         }
 
         public static string LekeresQuery(string tablaNev, List<string> lekerendoOszlopNevek, List<string> feltetelOszlopNevek = null, List<string> feltelOszlopErtekek = null)
@@ -147,8 +155,16 @@ namespace AdatbazisFunkciok
             for (int i = 0; i < feltetelOszlopNevek.Count; ++i)
                 torlesQuery += feltetelOszlopNevek[i] + " = \"" + feltelOszlopErtekek[i] + "\" AND ";
             torlesQuery = torlesQuery.Substring(0, torlesQuery.Length - 5);
-            MySqlCommand torles = new MySqlCommand(torlesQuery, KapcsolatKeszites());
+            MySqlConnection kapcsolat = KapcsolatKeszites();
+            MySqlCommand torles = new MySqlCommand(torlesQuery, kapcsolat);
             torles.ExecuteNonQuery();
+            kapcsolat.Close();
+        }
+
+        public static void KapcsolatBezaras(object kapcsolatKulcs)
+        {
+            Kapcsolatok[kapcsolatKulcs].Close();
+            Kapcsolatok.Remove(kapcsolatKulcs);
         }
     }
 }

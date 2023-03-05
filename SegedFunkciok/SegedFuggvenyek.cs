@@ -17,7 +17,14 @@ namespace SegedFunkciok
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             using (WebClient client = new WebClient())
             {
-                client.DownloadFile(new Uri(link), fileUtvonal);
+                try
+                {
+                    client.DownloadFile(new Uri(link), fileUtvonal);
+                }
+                catch 
+                {
+                    Logger.log("Hibas kep link: " + link);
+                }
             }
         }
 

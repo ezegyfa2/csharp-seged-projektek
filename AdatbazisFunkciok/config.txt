@@ -1,4 +1,0 @@
-SERVER=localhost
-DATABASE=euroactive
-USERNAME=root
-CHARSET=utf8;
