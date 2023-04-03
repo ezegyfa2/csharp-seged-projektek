@@ -1,4 +1,5 @@
 ﻿using Aspose.Imaging;
+using Aspose.Imaging.CoreExceptions;
 using Aspose.Imaging.ImageOptions;
 using System;
 using System.Collections.Generic;
@@ -34,13 +35,20 @@ namespace SegedFunkciok
             {
                 celKepEleresiUtvonal = Path.Combine(Path.GetDirectoryName(eredetiKepEleresiUtvonal), Path.GetFileNameWithoutExtension(eredetiKepEleresiUtvonal) + ".png");
             }
-            using (Image image = Image.Load(eredetiKepEleresiUtvonal))
+            try
             {
-                // Create PNG options
-                PngOptions options = new PngOptions() { ColorType = Aspose.Imaging.FileFormats.Png.PngColorType.TruecolorWithAlpha };
+                using (Image image = Image.Load(eredetiKepEleresiUtvonal))
+                {
+                    // Create PNG options
+                    PngOptions options = new PngOptions() { ColorType = Aspose.Imaging.FileFormats.Png.PngColorType.TruecolorWithAlpha };
 
-                // Save image as JPG
-                image.Save(celKepEleresiUtvonal, options);
+                    // Save image as JPG
+                    image.Save(celKepEleresiUtvonal, options);
+                }
+            }
+            catch (ImageLoadException e)
+            {
+
             }
         }
 
